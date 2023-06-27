@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   NativeBaseProvider,
   Box,
@@ -6,10 +6,16 @@ import {
   Heading,
   IconButton,
   Icon,
+  Input,
+  TextArea,
 } from "native-base";
 import { AntDesign, FontAwesome } from "@expo/vector-icons";
 
 const Example = () => {
+  const [text, setText] = useState("買い物に行く");
+  const [task, setTask] = useState("・牛乳");
+  const [isReadOnly, setIsReadOnly] = useState(true);
+
   return (
     <NativeBaseProvider>
       <Box
@@ -31,14 +37,20 @@ const Example = () => {
 
         <Heading fontSize="32">タスク詳細</Heading>
         <Box bgColor="white" w="100%" h="80%" py="4" px="4" m="4" rounded="10%">
-          <Heading>買い物に行く</Heading>
+          <Input
+            isReadOnly={isReadOnly}
+            value={text}
+            onChangeText={(text) => setText(text)}
+          />
           <Text color="muted.500">05/01 18:00まで</Text>
-          <Text></Text>
-          <Heading fontSize="18" pt="2">
-            ・牛乳
-          </Heading>
-          <Heading fontSize="18">・にんじん</Heading>
+          <TextArea
+            isReadOnly={isReadOnly}
+            value={task}
+            onChangeTask={(task) => setTask(task)}
+          />
+
           <IconButton
+            onPress={() => setIsReadOnly(!isReadOnly)}
             icon={
               <Icon
                 as={<FontAwesome name="pencil-square-o" />}
