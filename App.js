@@ -13,6 +13,7 @@ import { AntDesign, FontAwesome } from "@expo/vector-icons";
 
 const Example = () => {
   const [text, setText] = useState("買い物に行く");
+  const [date, setDate] = useState("05/01 18:00まで");
   const [task, setTask] = useState("・牛乳");
   const [isReadOnly, setIsReadOnly] = useState(true);
 
@@ -39,12 +40,22 @@ const Example = () => {
         <Box bgColor="white" w="100%" h="80%" py="4" px="4" m="4" rounded="10%">
           <Input
             isReadOnly={isReadOnly}
+            variant="unstyled"
+            borderWidth={isReadOnly ? "0" : "1"}
             value={text}
             onChangeText={(text) => setText(text)}
           />
-          <Text color="muted.500">05/01 18:00まで</Text>
+          <Input
+            isReadOnly={isReadOnly}
+            variant="unstyled"
+            borderWidth={isReadOnly ? "0" : "1"}
+            value={date}
+            onChangeDate={(date) => setDate(date)}
+          />
           <TextArea
             isReadOnly={isReadOnly}
+            variant="unstyled"
+            borderWidth={isReadOnly ? "0" : "1"}
             value={task}
             onChangeTask={(task) => setTask(task)}
           />
