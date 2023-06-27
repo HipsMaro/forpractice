@@ -50,14 +50,14 @@ const Example = () => {
             variant="unstyled"
             borderWidth={isReadOnly ? "0" : "1"}
             value={date}
-            onChangeDate={(date) => setDate(date)}
+            onChangeText={(date) => setDate(date)}
           />
           <TextArea
             isReadOnly={isReadOnly}
             variant="unstyled"
             borderWidth={isReadOnly ? "0" : "1"}
             value={task}
-            onChangeTask={(task) => setTask(task)}
+            onChangeText={(task) => setTask(task)}
           />
 
           <IconButton
