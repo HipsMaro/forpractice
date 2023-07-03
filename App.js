@@ -21,21 +21,41 @@ const supabaseKey =
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 const Example = () => {
-  const [task_name, setTask_name] = useState("");
-  const [task_deadline, setTask_deadline] = useState("");
-  const [task_detail, setTask_detail] = useState("");
+  const [taskname, setTaskName] = useState("");
+  const [taskdeadline, setTaskDeadline] = useState("");
+  const [taskdetail, setTaskDetail] = useState("");
+  const [taskid, setTaskId] = useState("");
   const [isReadOnly, setIsReadOnly] = useState(true);
 
   useEffect(() => {
     const getData = async () => {
       const { data } = await supabase.from("tasks").select();
-      const taskName = data[4].task_name;
-      setTask_name(taskName);
-      setTask_deadline(data[4].task_deadline);
-      setTask_detail(data[4].task_detail);
+      const taskName = data[0].task_name;
+      setTaskName(taskName);
+      setTaskDeadline(data[0].task_deadline);
+      setTaskDetail(data[0].task_detail);
+      setTaskId(data[0].id);
+      console.log(data[0].id); // id: 16
     };
     getData();
   }, []);
+
+  useEffect(() => {
+    (async () => {
+      console.log(isReadOnly);
+      if (taskid && isReadOnly == true) {
+        const { error } = await supabase.from("tasks").upsert({
+          id: taskid,
+          task_name: taskname,
+          task_deadline: taskdeadline,
+          task_detail: taskdetail,
+        });
+
+        console.log("error: ", error);
+        console.log("data: ", data);
+      }
+    })();
+  }, [isReadOnly]);
 
   return (
     <NativeBaseProvider>
@@ -63,8 +83,8 @@ const Example = () => {
             isReadOnly={isReadOnly}
             variant="unstyled"
             borderWidth={isReadOnly ? "0" : "1"}
-            value={task_name}
-            onChangeText={(text) => setTask_name(text)}
+            value={taskname}
+            onChangeText={(text) => setTaskName(text)}
           />
 
           <Input
@@ -72,8 +92,8 @@ const Example = () => {
             isReadOnly={isReadOnly}
             variant="unstyled"
             borderWidth={isReadOnly ? "0" : "1"}
-            value={task_deadline}
-            onChangeText={(text) => setTask_deadline(text)}
+            value={taskdeadline}
+            onChangeText={(text) => setTaskDeadline(text)}
           />
 
           <TextArea
@@ -81,12 +101,14 @@ const Example = () => {
             isReadOnly={isReadOnly}
             variant="unstyled"
             borderWidth={isReadOnly ? "0" : "1"}
-            value={task_detail}
-            onChangeText={(text) => setTask_detail(text)}
+            value={taskdetail}
+            onChangeText={(text) => setTaskDetail(text)}
           />
 
           <IconButton
-            onPress={() => setIsReadOnly(!isReadOnly)}
+            onPress={() => {
+              setIsReadOnly(!isReadOnly);
+            }}
             icon={
               <Icon
                 as={<FontAwesome name="pencil-square-o" />}
